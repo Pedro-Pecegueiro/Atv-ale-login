@@ -1,0 +1,14 @@
+<!DOCTYPE html>
+<html lang="pt-BR" xmlns:th="http://www.thymeleaf.org">
+<head th:replace="~{fragments/layout :: head('Portal do cliente')}"></head>
+<body>
+<header th:replace="~{fragments/layout :: navigation}"></header>
+<main class="container page-content narrow-content">
+    <span class="eyebrow">Portal do cliente</span>
+    <h1>Bem-vindo ao JurisHome</h1>
+    <div class="panel"><h2>Acesso confirmado</h2><p>Sua conta esta autenticada e autorizada para acessar o ambiente do cliente.</p></div>
+    <a class="text-link" th:href="@{/dashboard}">← Voltar ao painel</a>
+</main>
+<footer th:replace="~{fragments/layout :: footer}"></footer>
+</body>
+</html>

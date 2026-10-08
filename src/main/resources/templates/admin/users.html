@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="pt-BR" xmlns:th="http://www.thymeleaf.org">
+<head th:replace="~{fragments/layout :: head('Gestao de usuarios')}"></head>
+<body>
+<header th:replace="~{fragments/layout :: navigation}"></header>
+<main class="container page-content">
+    <div th:replace="~{fragments/layout :: messages}"></div>
+    <section class="page-heading"><div><span class="eyebrow">Administracao</span><h1>Controle de usuarios</h1><p class="muted">Gerencie perfis, estado da conta e bloqueios.</p></div><span class="badge" th:text="${users.size() + ' contas'}">0 contas</span></section>
+    <div class="table-wrap">
+        <table>
+            <thead><tr><th>Usuario</th><th>Perfis</th><th>Estado</th><th>Seguranca</th><th>Acoes</th></tr></thead>
+            <tbody>
+            <tr th:each="user : ${users}">
+                <td><strong th:text="${user.username}">usuario</strong><small th:text="${user.email}">email</small></td>
+                <td><div class="badge-row"><span class="badge" th:each="role : ${user.roles}" th:text="${role.label}">Perfil</span></div></td>
+                <td><span class="badge" th:classappend="${user.enabled} ? 'badge-success' : 'badge-danger'" th:text="${user.enabled ? 'Ativa' : 'Inativa'}">Ativa</span></td>
+                <td><span th:if="${user.currentlyLocked}" class="badge badge-warning">Bloqueada</span><span th:unless="${user.currentlyLocked}" class="muted">Normal</span></td>
+                <td class="actions-cell">
+                    <a class="button button-small button-secondary" th:href="@{/admin/usuarios/{id}/editar(id=${user.id})}">Editar</a>
+                    <form th:if="${user.currentlyLocked}" th:action="@{/admin/usuarios/{id}/desbloquear(id=${user.id})}" method="post" class="inline-form">
+                        <input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}">
+                        <button class="button button-small button-ghost" type="submit">Desbloquear</button>
+                    </form>
+                    <form th:action="@{/admin/usuarios/{id}/excluir(id=${user.id})}" method="post" class="inline-form">
+                        <input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}">
+                        <button class="button button-small button-danger" type="submit">Excluir</button>
+                    </form>
+                </td>
+            </tr>
+            </tbody>
+        </table>
+    </div>
+</main>
+<footer th:replace="~{fragments/layout :: footer}"></footer>
+</body>
+</html>

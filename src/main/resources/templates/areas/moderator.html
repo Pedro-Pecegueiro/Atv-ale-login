@@ -1,0 +1,14 @@
+<!DOCTYPE html>
+<html lang="pt-BR" xmlns:th="http://www.thymeleaf.org">
+<head th:replace="~{fragments/layout :: head('Equipe juridica')}"></head>
+<body>
+<header th:replace="~{fragments/layout :: navigation}"></header>
+<main class="container page-content narrow-content">
+    <span class="eyebrow">Acesso profissional</span>
+    <h1>Equipe juridica</h1>
+    <div class="panel"><h2>Ambiente protegido</h2><p>Esta area e exclusiva para integrantes autorizados da equipe juridica do JurisHome.</p></div>
+    <a class="text-link" th:href="@{/dashboard}">← Voltar ao painel</a>
+</main>
+<footer th:replace="~{fragments/layout :: footer}"></footer>
+</body>
+</html>

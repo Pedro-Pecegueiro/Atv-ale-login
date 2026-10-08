@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html lang="pt-BR" xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+<head th:replace="~{fragments/layout :: head('Painel')}"></head>
+<body>
+<header th:replace="~{fragments/layout :: navigation}"></header>
+<main class="container page-content">
+    <div th:replace="~{fragments/layout :: messages}"></div>
+    <section class="page-heading">
+        <div><span class="eyebrow">Minha conta</span><h1>Ola, <span th:text="${account.username}">usuario</span>.</h1></div>
+        <span class="badge badge-success">Conta ativa</span>
+    </section>
+    <section class="profile-strip">
+        <div><span class="meta-label">E-mail</span><strong th:text="${account.email}">email</strong></div>
+        <div><span class="meta-label">Perfis concedidos</span><div class="badge-row"><span class="badge" th:each="role : ${account.roles}" th:text="${role.label}">Perfil</span></div></div>
+        <div><span class="meta-label">Ultimo acesso</span><strong th:text="${account.lastLoginAt != null ? account.lastLoginAt : 'Primeiro acesso'}">agora</strong></div>
+    </section>
+    <h2 class="section-title">Areas disponiveis</h2>
+    <section class="access-grid">
+        <a class="access-card" th:href="@{/usuario}" sec:authorize="hasAnyRole('USER','MODERATOR','ADMIN')"><span>Cliente</span><h3>Portal do cliente</h3><p>Acesso autenticado aos servicos do JurisHome.</p></a>
+        <a class="access-card" th:href="@{/moderador}" sec:authorize="hasAnyRole('MODERATOR','ADMIN')"><span>Profissional</span><h3>Equipe juridica</h3><p>Area reservada aos profissionais autorizados.</p></a>
+        <a class="access-card" th:href="@{/admin/usuarios}" sec:authorize="hasRole('ADMIN')"><span>Administracao</span><h3>Gestao de usuarios</h3><p>Controle de perfis, contas e bloqueios de seguranca.</p></a>
+    </section>
+</main>
+<footer th:replace="~{fragments/layout :: footer}"></footer>
+</body>
+</html>

@@ -1,0 +1,62 @@
+spring:
+  application:
+    name: jurishome
+  mongodb:
+    uri: ${MONGODB_URI:mongodb://localhost:27017/jurishome}
+  data:
+    mongodb:
+      auto-index-creation: true
+  session:
+    timeout: ${SESSION_TIMEOUT:30m}
+  thymeleaf:
+    cache: ${THYMELEAF_CACHE:false}
+  mail:
+    host: ${MAIL_HOST:localhost}
+    port: ${MAIL_PORT:587}
+    username: ${MAIL_USERNAME:}
+    password: ${MAIL_PASSWORD:}
+    properties:
+      mail:
+        smtp:
+          auth: ${MAIL_SMTP_AUTH:true}
+          starttls:
+            enable: ${MAIL_STARTTLS:true}
+
+server:
+  port: ${SERVER_PORT:8080}
+  servlet:
+    session:
+      cookie:
+        http-only: true
+        secure: ${COOKIE_SECURE:false}
+        same-site: lax
+  error:
+    include-message: never
+    include-stacktrace: never
+
+app:
+  theme:
+    name: ${APP_THEME:jurishome}
+    display-name: ${APP_NAME:JurisHome}
+  security:
+    max-failed-attempts: ${MAX_FAILED_ATTEMPTS:3}
+    lock-duration: ${LOCK_DURATION:15m}
+  registration-verification:
+    delivery: ${REGISTRATION_VERIFICATION_DELIVERY:screen}
+    base-url: ${APP_BASE_URL:http://localhost:8080}
+    token-duration: ${VERIFICATION_TOKEN_DURATION:24h}
+    from: ${MAIL_FROM:noreply@jurishome.local}
+  password-reset:
+    delivery: ${PASSWORD_RESET_DELIVERY:screen}
+    base-url: ${APP_BASE_URL:http://localhost:8080}
+    token-duration: ${PASSWORD_RESET_TOKEN_DURATION:30m}
+    from: ${MAIL_FROM:noreply@jurishome.local}
+  bootstrap-admin:
+    username: ${ADMIN_USERNAME:}
+    email: ${ADMIN_EMAIL:}
+    password: ${ADMIN_PASSWORD:}
+
+logging:
+  level:
+    org.springframework.security: INFO
+    org.springframework.data.mongodb: INFO

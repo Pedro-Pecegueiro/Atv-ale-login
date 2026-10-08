@@ -1,0 +1,9 @@
+<!DOCTYPE html>
+<html lang="pt-BR" xmlns:th="http://www.thymeleaf.org">
+<head th:replace="~{fragments/layout :: head('Acesso negado')}"></head>
+<body>
+<header th:replace="~{fragments/layout :: navigation}"></header>
+<main class="container error-page"><span class="error-code">403</span><h1>Acesso negado</h1><p>Seu perfil nao possui permissao para abrir esta area.</p><a class="button button-primary" th:href="@{/dashboard}">Voltar ao painel</a></main>
+<footer th:replace="~{fragments/layout :: footer}"></footer>
+</body>
+</html>
