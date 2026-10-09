@@ -1,18 +1,19 @@
-Sistema de Login Seguro
+# JurisHome - Sistema de Login Seguro
 
 ## Sobre o projeto
 
-O projeto é um sistema de autenticação e autorização desenvolvido com Java 21, Spring Boot, Spring Security, Thymeleaf e MongoDB Atlas.
+O JurisHome é um sistema de autenticação e autorização desenvolvido com Java 21, Spring Boot, Spring Security, Thymeleaf e MongoDB Atlas.
 
 O projeto controla o cadastro, o acesso e as permissões dos usuários de uma aplicação jurídica. A organização em camadas mantém a segurança e as regras de negócio separadas da interface.
 
 ## Funcionalidades implementadas
 
-- cadastro com validação de nome de usuário, e-mail e senha;
+- cadastro com validação de nome completo, nome de usuário, e-mail e senha;
 - confirmação do cadastro por link temporário;
 - login por nome de usuário ou e-mail;
 - logout com invalidação da sessão;
 - recuperação de senha por link temporário e de uso único;
+- verificação em duas etapas com Google Authenticator;
 - armazenamento de senhas com BCrypt;
 - bloqueio da conta por 15 minutos após três tentativas incorretas;
 - autorização baseada em três perfis de acesso;
@@ -32,6 +33,7 @@ O projeto controla o cadastro, o acesso e as permissões dos usuários de uma ap
 - Bean Validation
 - Maven Wrapper
 - MongoDB Atlas
+- ZXing para geração local do QR Code
 
 ## Perfis de acesso
 
@@ -50,12 +52,23 @@ O cadastro público atribui somente `ROLE_USER`. A alteração de perfis é rest
 | `/`, `/login` e `/cadastro` | acesso público |
 | `/cadastro/confirmar` e `/cadastro/reenviar` | acesso público |
 | `/senha/esqueci` e `/senha/redefinir` | acesso público |
+| `/2fa/configurar` e `/2fa/verificar` | usuário com senha validada |
 | `/dashboard` | usuário autenticado |
 | `/usuario/**` | usuário, moderador ou administrador |
 | `/moderador/**` | moderador ou administrador |
 | `/admin/**` | administrador |
 
 As permissões são aplicadas pelo Spring Security. A interface exibe somente as áreas permitidas, mas a proteção principal permanece no servidor.
+
+## Fluxo de autenticação
+
+1. o usuário informa o nome de usuário ou e-mail e a senha;
+2. o Spring Security valida a senha e o estado da conta;
+3. no primeiro acesso, o sistema apresenta um QR Code para cadastro no Google Authenticator;
+4. o usuário confirma o código de seis dígitos;
+5. somente depois do segundo fator as áreas protegidas são liberadas.
+
+Os códigos seguem o padrão TOTP, possuem seis dígitos e mudam a cada 30 segundos. A validação tolera uma diferença de até 60 segundos entre o relógio do celular e o servidor. Três códigos incorretos encerram a sessão e contam para o bloqueio temporário da conta. O administrador consegue redefinir o autenticador de outro usuário.
 
 ## Estrutura do projeto
 
@@ -102,7 +115,7 @@ $env:MONGODB_URI = "mongodb+srv://USUARIO:SENHA@CLUSTER.mongodb.net/jurishome?re
 
 | Coleção | Dados armazenados |
 | --- | --- |
-| `users` | usuários, hash das senhas, perfis, estado da conta e bloqueios |
+| `users` | nome completo, usuários, hash das senhas, configuração do autenticador, perfis, estado da conta e bloqueios |
 | `sessions` | sessões HTTP gerenciadas pelo Spring Session |
 | `email_verification_tokens` | tokens de confirmação de cadastro |
 | `password_reset_tokens` | tokens de recuperação de senha |
@@ -127,7 +140,8 @@ Pré-requisitos:
 
 - JDK 21;
 - acesso ao cluster MongoDB Atlas;
-- variável `MONGODB_URI` configurada.
+- variável `MONGODB_URI` configurada;
+- Google Authenticator instalado no celular para confirmar o segundo fator.
 
 Na raiz do projeto, execute:
 
@@ -152,6 +166,8 @@ No ambiente local, os links de confirmação de cadastro e recuperação de senh
 - cookies de sessão com `HttpOnly` e `SameSite=Lax`;
 - mensagens genéricas para credenciais inválidas;
 - bloqueio persistido depois de três falhas de login;
+- segundo fator obrigatório com códigos TOTP compatíveis com Google Authenticator;
+- QR Code gerado na própria aplicação, sem serviço externo;
 - tokens aleatórios armazenados somente como hash SHA-256;
 - invalidação das sessões após troca de senha, desativação ou alteração de perfil;
 - proteção contra exclusão do próprio administrador e do último administrador ativo;
@@ -184,12 +200,11 @@ Para executar o arquivo gerado:
 java -jar target\jurishome-1.0.0.jar
 ```
 
-A suíte contém 25 testes para cadastro, validação, duplicidade, hash de senha, login, bloqueio por tentativas, autorização dos três perfis, CSRF, logout, persistência de usuários e sessões, recuperação de senha e operações administrativas.
+A suíte contém 31 testes para cadastro, validação, duplicidade, hash de senha, login, segundo fator TOTP, tolerância controlada de horário, geração do QR Code, mensagens genéricas de erro, bloqueio por tentativas, autorização dos três perfis, CSRF, logout, persistência de usuários e sessões, recuperação de senha e operações administrativas.
 
 ## Arquivos de configuração
 
 - `application.yml`: configura conexão, sessão, cookies, segurança e execução;
 - `.env.example`: lista as variáveis de ambiente sem credenciais reais;
 - `.gitignore`: impede o versionamento de `.env`, `target`, arquivos da IDE e logs.
-
 
