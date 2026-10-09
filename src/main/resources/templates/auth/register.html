@@ -13,6 +13,9 @@
             <div th:if="${#fields.hasGlobalErrors()}" class="alert alert-error" role="alert">
                 <p th:each="err : ${#fields.globalErrors()}" th:text="${err}"></p>
             </div>
+            <label for="fullName">Nome completo</label>
+            <input id="fullName" th:field="*{fullName}" autocomplete="name" maxlength="100" required autofocus>
+            <p class="field-error" th:if="${#fields.hasErrors('fullName')}" th:errors="*{fullName}"></p>
             <label for="username">Nome de usuario</label>
             <input id="username" th:field="*{username}" autocomplete="username" maxlength="30" required>
             <p class="field-error" th:if="${#fields.hasErrors('username')}" th:errors="*{username}"></p>

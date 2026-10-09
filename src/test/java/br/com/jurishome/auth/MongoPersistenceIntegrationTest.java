@@ -48,6 +48,7 @@ class MongoPersistenceIntegrationTest {
     void userAndPasswordHashArePersistedInMongoDb() {
         String suffix = UUID.randomUUID().toString();
         UserAccount account = new UserAccount();
+        account.setFullName("Usuario de Integracao");
         account.setUsername("teste-" + suffix);
         account.setEmail("teste-" + suffix + "@example.com");
         account.setPasswordHash(passwordEncoder.encode("Senha-Forte-2026!"));
@@ -60,6 +61,7 @@ class MongoPersistenceIntegrationTest {
         createdUserId = saved.getId();
 
         UserAccount loaded = userRepository.findById(saved.getId()).orElseThrow();
+        assertThat(loaded.getFullName()).isEqualTo("Usuario de Integracao");
         assertThat(loaded.getPasswordHash()).startsWith("$2").doesNotContain("Senha-Forte-2026!");
         assertThat(loaded.getRoles()).containsExactly(Role.ROLE_USER);
     }

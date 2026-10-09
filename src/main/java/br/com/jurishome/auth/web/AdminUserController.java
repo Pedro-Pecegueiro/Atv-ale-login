@@ -16,6 +16,7 @@ import br.com.jurishome.auth.domain.Role;
 import br.com.jurishome.auth.domain.UserAccount;
 import br.com.jurishome.auth.dto.AdminUserUpdateForm;
 import br.com.jurishome.auth.exception.BusinessException;
+import br.com.jurishome.auth.service.TwoFactorService;
 import br.com.jurishome.auth.service.UserAccountService;
 import jakarta.validation.Valid;
 
@@ -24,9 +25,11 @@ import jakarta.validation.Valid;
 public class AdminUserController {
 
     private final UserAccountService userService;
+    private final TwoFactorService twoFactorService;
 
-    public AdminUserController(UserAccountService userService) {
+    public AdminUserController(UserAccountService userService, TwoFactorService twoFactorService) {
         this.userService = userService;
+        this.twoFactorService = twoFactorService;
     }
 
     @GetMapping
@@ -79,6 +82,22 @@ public class AdminUserController {
     public String unlock(@PathVariable String id, RedirectAttributes redirectAttributes) {
         userService.unlock(id);
         redirectAttributes.addFlashAttribute("success", "Bloqueio e tentativas falhas removidos.");
+        return "redirect:/admin/usuarios";
+    }
+
+    @PostMapping("/{id}/2fa/resetar")
+    public String resetTwoFactor(
+        @PathVariable String id,
+        Principal principal,
+        RedirectAttributes redirectAttributes
+    ) {
+        UserAccount account = userService.findById(id);
+        if (account.getUsername().equals(principal.getName())) {
+            redirectAttributes.addFlashAttribute("error", "Voce nao pode redefinir seu proprio autenticador por esta tela.");
+            return "redirect:/admin/usuarios";
+        }
+        twoFactorService.reset(id);
+        redirectAttributes.addFlashAttribute("success", "Autenticador do usuario redefinido.");
         return "redirect:/admin/usuarios";
     }
 

@@ -24,7 +24,7 @@ public class CustomUserDetailsService implements UserDetailsService {
     public UserDetails loadUserByUsername(String login) throws UsernameNotFoundException {
         String normalized = login.trim().toLowerCase(Locale.ROOT);
         UserAccount account = repository.findByUsernameOrEmail(normalized, normalized)
-            .orElseThrow(() -> new UsernameNotFoundException("Credenciais invalidas."));
+            .orElseThrow(() -> new UsernameNotFoundException("Credenciais inválidas."));
 
         String[] authorities = account.getRoles().stream()
             .map(Enum::name)

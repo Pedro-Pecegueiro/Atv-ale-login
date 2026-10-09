@@ -7,6 +7,10 @@ import jakarta.validation.constraints.Size;
 
 public class RegistrationForm {
 
+    @NotBlank(message = "Informe o nome completo.")
+    @Size(min = 3, max = 100, message = "O nome completo deve ter entre 3 e 100 caracteres.")
+    private String fullName;
+
     @NotBlank(message = "Informe o nome de usuario.")
     @Size(min = 3, max = 30, message = "Use entre 3 e 30 caracteres.")
     @Pattern(regexp = "^[A-Za-z0-9._-]+$", message = "Use apenas letras, numeros, ponto, hifen ou sublinhado.")
@@ -29,6 +33,8 @@ public class RegistrationForm {
     @Size(max = 72, message = "A confirmacao deve ter no maximo 72 caracteres.")
     private String confirmPassword;
 
+    public String getFullName() { return fullName; }
+    public void setFullName(String fullName) { this.fullName = fullName; }
     public String getUsername() { return username; }
     public void setUsername(String username) { this.username = username; }
     public String getEmail() { return email; }

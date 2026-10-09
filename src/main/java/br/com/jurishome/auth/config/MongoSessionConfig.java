@@ -17,6 +17,7 @@ public class MongoSessionConfig {
     SessionRepositoryCustomizer<MongoIndexedSessionRepository> mongoSessionCustomizer(
         @Value("${spring.session.timeout:30m}") Duration sessionTimeout
     ) {
+        // O mesmo prazo e aplicado a todas as sessoes gravadas na colecao sessions.
         return repository -> repository.setDefaultMaxInactiveInterval(sessionTimeout);
     }
 }

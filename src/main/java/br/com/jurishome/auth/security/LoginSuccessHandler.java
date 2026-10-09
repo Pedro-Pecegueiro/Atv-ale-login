@@ -3,22 +3,21 @@ package br.com.jurishome.auth.security;
 import java.io.IOException;
 
 import org.springframework.security.core.Authentication;
-import org.springframework.security.web.authentication.SimpleUrlAuthenticationSuccessHandler;
+import org.springframework.security.web.authentication.AuthenticationSuccessHandler;
 import org.springframework.stereotype.Component;
 
-import br.com.jurishome.auth.service.UserAccountService;
+import br.com.jurishome.auth.service.TwoFactorService;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 
 @Component
-public class LoginSuccessHandler extends SimpleUrlAuthenticationSuccessHandler {
+public class LoginSuccessHandler implements AuthenticationSuccessHandler {
 
-    private final UserAccountService userService;
+    private final TwoFactorService twoFactorService;
 
-    public LoginSuccessHandler(UserAccountService userService) {
-        super("/dashboard");
-        this.userService = userService;
+    public LoginSuccessHandler(TwoFactorService twoFactorService) {
+        this.twoFactorService = twoFactorService;
     }
 
     @Override
@@ -27,7 +26,10 @@ public class LoginSuccessHandler extends SimpleUrlAuthenticationSuccessHandler {
         HttpServletResponse response,
         Authentication authentication
     ) throws IOException, ServletException {
-        userService.recordLoginSuccess(authentication.getName());
-        super.onAuthenticationSuccess(request, response, authentication);
+        request.getSession().setAttribute(TwoFactorSession.VERIFIED, false);
+        String target = twoFactorService.isEnabled(authentication.getName())
+            ? "/2fa/verificar"
+            : "/2fa/configurar";
+        response.sendRedirect(request.getContextPath() + target);
     }
 }

@@ -52,6 +52,7 @@ public class UserAccountService {
         ensureAvailable(username, email);
 
         UserAccount account = new UserAccount();
+        account.setFullName(normalizeFullName(form.getFullName()));
         account.setUsername(username);
         account.setEmail(email);
         account.setPasswordHash(passwordEncoder.encode(form.getPassword()));
@@ -225,6 +226,10 @@ public class UserAccountService {
 
     private String normalize(String value) {
         return value == null ? "" : value.trim().toLowerCase(Locale.ROOT);
+    }
+
+    private String normalizeFullName(String value) {
+        return value == null ? "" : value.trim().replaceAll("\\s+", " ");
     }
 
     private boolean isStrongPassword(String value) {

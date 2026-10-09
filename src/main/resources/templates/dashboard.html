@@ -6,7 +6,7 @@
 <main class="container page-content">
     <div th:replace="~{fragments/layout :: messages}"></div>
     <section class="page-heading">
-        <div><span class="eyebrow">Minha conta</span><h1>Ola, <span th:text="${account.username}">usuario</span>.</h1></div>
+        <div><span class="eyebrow">Minha conta</span><h1>Ola, <span th:text="${account.fullName != null and !account.fullName.isBlank() ? account.fullName : account.username}">usuario</span>.</h1></div>
         <span class="badge badge-success">Conta ativa</span>
     </section>
     <section class="profile-strip">

@@ -14,6 +14,8 @@ public class UserAccount {
     @Id
     private String id;
 
+    private String fullName;
+
     @Indexed(unique = true)
     private String username;
 
@@ -27,6 +29,8 @@ public class UserAccount {
     private Instant lockedUntil;
     private Instant lastLoginAt;
     private Instant emailVerifiedAt;
+    private boolean twoFactorEnabled;
+    private String totpSecret;
     private Instant createdAt;
     private Instant updatedAt;
 
@@ -36,6 +40,8 @@ public class UserAccount {
 
     public String getId() { return id; }
     public void setId(String id) { this.id = id; }
+    public String getFullName() { return fullName; }
+    public void setFullName(String fullName) { this.fullName = fullName; }
     public String getUsername() { return username; }
     public void setUsername(String username) { this.username = username; }
     public String getEmail() { return email; }
@@ -54,6 +60,10 @@ public class UserAccount {
     public void setLastLoginAt(Instant lastLoginAt) { this.lastLoginAt = lastLoginAt; }
     public Instant getEmailVerifiedAt() { return emailVerifiedAt; }
     public void setEmailVerifiedAt(Instant emailVerifiedAt) { this.emailVerifiedAt = emailVerifiedAt; }
+    public boolean isTwoFactorEnabled() { return twoFactorEnabled; }
+    public void setTwoFactorEnabled(boolean twoFactorEnabled) { this.twoFactorEnabled = twoFactorEnabled; }
+    public String getTotpSecret() { return totpSecret; }
+    public void setTotpSecret(String totpSecret) { this.totpSecret = totpSecret; }
     public Instant getCreatedAt() { return createdAt; }
     public void setCreatedAt(Instant createdAt) { this.createdAt = createdAt; }
     public Instant getUpdatedAt() { return updatedAt; }

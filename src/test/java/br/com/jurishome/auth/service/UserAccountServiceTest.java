@@ -56,6 +56,7 @@ class UserAccountServiceTest {
         ArgumentCaptor<UserAccount> captor = ArgumentCaptor.forClass(UserAccount.class);
         verify(repository).save(captor.capture());
         UserAccount saved = captor.getValue();
+        assertThat(saved.getFullName()).isEqualTo("Maria da Silva");
         assertThat(saved.getUsername()).isEqualTo("cliente.jurishome");
         assertThat(saved.getEmail()).isEqualTo("aluna@exemplo.com");
         assertThat(saved.getPasswordHash()).isNotEqualTo(form.getPassword()).startsWith("$2");
@@ -133,6 +134,7 @@ class UserAccountServiceTest {
 
     private RegistrationForm registrationForm() {
         RegistrationForm form = new RegistrationForm();
+        form.setFullName("  Maria   da Silva  ");
         form.setUsername(" Cliente.JurisHome ");
         form.setEmail(" Aluna@Exemplo.com ");
         form.setPassword("Senha-Forte-123!");

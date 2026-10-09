@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html lang="pt-BR" xmlns:th="http://www.thymeleaf.org">
+<head th:replace="~{fragments/layout :: head('Configurar autenticador')}"></head>
+<body>
+<header th:replace="~{fragments/layout :: navigation}"></header>
+<main class="auth-shell container">
+    <section class="auth-card auth-card-wide">
+        <span class="eyebrow">Verificacao em duas etapas</span>
+        <h1>Configurar Google Authenticator</h1>
+        <p class="muted">Abra o Google Authenticator, toque em adicionar conta e leia o QR Code.</p>
+        <div th:replace="~{fragments/layout :: messages}"></div>
+        <div class="two-factor-setup">
+            <img class="qr-code" th:src="@{/2fa/qr}" alt="QR Code para configurar o Google Authenticator">
+            <div>
+                <p class="muted">Se nao conseguir ler o QR Code, informe esta chave manualmente:</p>
+                <code class="secret-code" th:text="${secret}">CHAVE</code>
+            </div>
+        </div>
+        <form th:action="@{/2fa/configurar}" method="post" class="stacked-form">
+            <input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}">
+            <label for="code">Codigo de seis digitos</label>
+            <input id="code" name="code" type="text" inputmode="numeric" autocomplete="one-time-code" pattern="[0-9]{6}" maxlength="6" required autofocus>
+            <button class="button button-primary button-block" type="submit">Ativar autenticador</button>
+        </form>
+    </section>
+</main>
+<footer th:replace="~{fragments/layout :: footer}"></footer>
+</body>
+</html>

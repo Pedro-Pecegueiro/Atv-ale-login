@@ -48,6 +48,9 @@ input:focus { border-color: var(--color-primary); box-shadow: 0 0 0 3px color-mi
 .password-hint, .form-footer { color: var(--color-muted); font-size: .88rem; }
 .password-recovery-link { width: fit-content; margin: .15rem 0 .35rem auto; font-size: .88rem; font-weight: 650; }
 .form-footer { margin: 1.2rem 0 0; text-align: center; }
+.two-factor-setup { display: grid; grid-template-columns: auto 1fr; align-items: center; gap: 1.5rem; margin-top: 1.5rem; }
+.qr-code { width: 220px; max-width: 100%; padding: .5rem; background: #fff; border: 1px solid var(--color-border); border-radius: 8px; }
+.secret-code { display: block; max-width: 100%; padding: .8rem; overflow-wrap: anywhere; color: var(--color-text); background: var(--color-surface-soft); border: 1px solid var(--color-border); border-radius: 6px; font-size: 1rem; letter-spacing: .08em; }
 .alert { padding: .85rem 1rem; border-radius: 6px; font-size: .92rem; }
 .alert p:last-child { margin-bottom: 0; }
 .alert-success { color: #111; background: #f2f2f2; border: 1px solid #111; }
@@ -89,6 +92,7 @@ fieldset { display: grid; gap: .65rem; margin: .5rem 0; padding: 1rem; border: 1
     .navigation { align-items: flex-start; padding-block: .85rem; }
     .nav-links { justify-content: flex-end; }
     .form-columns { grid-template-columns: 1fr; }
+    .two-factor-setup { grid-template-columns: 1fr; justify-items: center; text-align: center; }
     .page-heading { flex-direction: column; }
 }
 @media (max-width: 520px) {
