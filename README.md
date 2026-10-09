@@ -1,8 +1,8 @@
-# JurisHome - Sistema de Login Seguro
+Sistema de Login Seguro
 
 ## Sobre o projeto
 
-O JurisHome é um sistema acadêmico de autenticação e autorização desenvolvido com Java 21, Spring Boot, Spring Security, Thymeleaf e MongoDB Atlas.
+O projeto é um sistema de autenticação e autorização desenvolvido com Java 21, Spring Boot, Spring Security, Thymeleaf e MongoDB Atlas.
 
 O projeto controla o cadastro, o acesso e as permissões dos usuários de uma aplicação jurídica. A organização em camadas mantém a segurança e as regras de negócio separadas da interface.
 
@@ -192,4 +192,4 @@ A suíte contém 25 testes para cadastro, validação, duplicidade, hash de senh
 - `.env.example`: lista as variáveis de ambiente sem credenciais reais;
 - `.gitignore`: impede o versionamento de `.env`, `target`, arquivos da IDE e logs.
 
-O código-fonte não contém senhas, tokens ou URI real do MongoDB Atlas.
+
